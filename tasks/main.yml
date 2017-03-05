@@ -1,2 +1,3 @@
 ---
 # tasks file for xentaurs-ansible-docker-ucp-ec2-nodes
+- include: primary.yml
