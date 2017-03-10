@@ -1,49 +1,49 @@
 # ec2 primary node
 
-- name: provision member nodes
+- name: provision worker nodes
   ec2:
         key_name: "{{ keypair }}"
         group_id: "{{ pri_sg.group_id }}"
-        instance_type: "{{ member_instance_type }}"
+        instance_type: "{{ worker_instance_type }}"
         image: "{{ image }}"
         wait: true
         count: 1
         region: "{{ aws_region }}"
         vpc_subnet_id: "{{ vpc_subnets.results[0].subnet.id }}"
         instance_tags: "{{ resource_tags }}"
-  register: ucp_member_nodes
+  register: ucp_worker_nodes
 
-- name: provision member nodes
+- name: provision worker nodes
   ec2:
         key_name: "{{ keypair }}"
         group_id: "{{ pri_sg.group_id }}"
-        instance_type: "{{ member_instance_type }}"
+        instance_type: "{{ worker_instance_type }}"
         image: "{{ image }}"
         wait: true
         count: 1
         region: "{{ aws_region }}"
         vpc_subnet_id: "{{ vpc_subnets.results[2].subnet.id }}"
         instance_tags: "{{ resource_tags }}"
-  register: ucp_member_nodes
+  register: ucp_worker_nodes
 
-- name: provision member nodes
+- name: provision worker nodes
   ec2:
         key_name: "{{ keypair }}"
         group_id: "{{ pri_sg.group_id }}"
-        instance_type: "{{ member_instance_type }}"
+        instance_type: "{{ worker_instance_type }}"
         image: "{{ image }}"
         wait: true
         count: 1
         region: "{{ aws_region }}"
         vpc_subnet_id: "{{ vpc_subnets.results[4].subnet.id }}"
         instance_tags: "{{ resource_tags }}"
-  register: ucp_member_nodes
+  register: ucp_worker_nodes
 
 - name: Add all instance public IPs to host group
   add_host:
     hostname: "{{ item.public_ip }}"
-    groupname: member_nodes
-  with_items: "{{ ucp_member_nodes.instances }}"
+    groupname: worker_nodes
+  with_items: "{{ ucp_worker_nodes.instances }}"
 
   #- debug: var=ec2
   #- debug: var=item
@@ -56,4 +56,4 @@
     port: 22
     delay: 60
     timeout: 320
-  with_items: "{{ ucp_member_nodes.instances}}"
+  with_items: "{{ ucp_worker_nodes.instances}}"
