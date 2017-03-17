@@ -1,9 +1,0 @@
----
-# vars file for xentaurs-ansible-docker-ucp-ec2-nodes
-keypair: xentaurs
-master_instance_type: t2.medium
-worker_instance_type: t2.medium
-image: ami-2d39803a
-resource_tags:
-  Owner: bcarpio
-  Terminate: True
